@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/nicholas/Desktop/NN_cpp/include/neural_network.hpp
+vector
+-
+iostream
+-
+cmath
+-
+string.h
+-
+stdlib.h
+-
+fstream
+-
+jsoncpp/json/json.h
+-
+
+/home/nicholas/Desktop/NN_cpp/src/neural_network/neural_network.cpp
+../../include/neural_network.hpp
+/home/nicholas/Desktop/NN_cpp/include/neural_network.hpp
+

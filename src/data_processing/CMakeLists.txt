@@ -1,0 +1,1 @@
+add_library(process_power_consumption power_consumption.cpp)

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libprocess_power_consumption.a  CMakeFiles/process_power_consumption.dir/power_consumption.cpp.o
+/usr/bin/ranlib libprocess_power_consumption.a
