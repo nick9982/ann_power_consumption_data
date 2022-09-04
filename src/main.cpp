@@ -104,7 +104,7 @@ void learnPowerConsumption()
     cout << "Average error after training: " << avg << endl;
     cout << "\nThe network's predictions are " << (1 - (avg/error_before_training)) * 100 << " percent more accurate than randomly choosing. " << endl;
     cout << "\nThe error is the average difference between the network's prediction of\nthe three region's power consumption and the actual power consumption." << endl;
-    if(duration.count() * 0.000001 > 60) cout << "\nTraining time: " << (duration.count() * 0.000001)/60 << " minutes" << endl;
+    if(duration.count() * 0.000001 >= 60) cout << "\nTraining time: " << (duration.count() * 0.000001)/60 << " minutes" << endl;
     else cout << "\nTraining time: " << duration.count() * 0.000001 << " seconds" << endl;
 
     cout << "downloading the statistics of this network." << endl;
