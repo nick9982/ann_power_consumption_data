@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/nn.dir/main.cpp.o  -o nn  neural_network/libneural_net.a data_processing/libprocess_power_consumption.a /usr/lib/x86_64-linux-gnu/libjsoncpp.so.1.7.4 -lpthread -lXrandr -lXi -ldl 
