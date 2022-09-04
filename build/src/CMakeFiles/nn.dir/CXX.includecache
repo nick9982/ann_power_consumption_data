@@ -39,6 +39,10 @@ stdlib.h
 -
 fstream
 -
+sstream
+-
+iomanip
+-
 jsoncpp/json/json.h
 -
 

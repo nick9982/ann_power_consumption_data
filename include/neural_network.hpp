@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <fstream>
+#include <sstream>
+#include <iomanip>
 #include <jsoncpp/json/json.h>
 
 using namespace std;
@@ -14,39 +16,39 @@ class Layer
     uint out;
     string activationFunction;
     string layerType;
-    float learningRate;
+    double learningRate;
     public:
 
-        Layer(string activationFunction, string layerType, uint in, uint out, float learningRate);
+        Layer(string activationFunction, string layerType, uint in, uint out, double learningRate);
 
-        void setLayer(vector<float> input);
+        void setLayer(vector<double> input);
 
         void updateLayerWeights(Layer nextLayer);
 
-        vector<float> firstDeltas(vector<float> expected);
+        vector<double> firstDeltas(vector<double> expected);
 
-        vector<float> forwardPropagation();
+        vector<double> forwardPropagation();
         class Neuron
         {
             string activationFunction;
-            float value;
-            float delta_value;
-            float cache_value;
+            double value;
+            double delta_value;
+            double cache_value;
             uint in;
             uint out;
 
             public:
                 Neuron(string activationFunction, string layerType, uint in, uint out);
 
-                void setValue(float input);
+                void setValue(double input);
 
-                void setDelta(float input);
+                void setDelta(double input);
 
-                float getValue();
+                double getValue();
 
-                float get_delta_value();
+                double get_delta_value();
 
-                float get_derivative();
+                double get_derivative();
 
 
 
@@ -54,8 +56,8 @@ class Layer
                 {
                     uint in;
                     uint out;
-                    float weight;
-                    float alpha;
+                    double weight;
+                    double alpha;
 
                     string layerType;
                     string activationFunction;
@@ -63,17 +65,17 @@ class Layer
                     public:
                         Weight(string activationFunction, string layerType, uint in, uint out);
 
-                        void setWeight(float inp);
+                        void setWeight(double inp);
 
-                        void update(float gradient, float learningRate);
+                        void update(double gradient, double learningRate);
 
                         void initWeight();
 
-                        float getWeight();
+                        double getWeight();
 
-                        float m;
+                        double m;
 
-                        float v;
+                        double v;
                 };
 
                 vector<Weight> weights;
@@ -82,44 +84,44 @@ class Layer
 
         class Bias
         {
-            float biasValue;
+            double biasValue;
             bool exists;
 
             public:
                 Bias();
 
-                void setBias(float inp);
+                void setBias(double inp);
 
-                void update(float gradient);
+                void update(double gradient);
 
-                float getBias();
+                double getBias();
 
                 bool getExists();
 
                 void setExists(bool exists);
 
-                float m;
+                double m;
 
-                float v;
+                double v;
 
-                float alpha;
+                double alpha;
         };
 
         Bias bias;
 
         vector<Neuron> neurons;
 
-        vector<float> backwardPropagation(vector<float> deltas_last_layer, Bias bias_infront_layer);
+        vector<double> backwardPropagation(vector<double> deltas_last_layer, Bias bias_infront_layer);
 };
 
 class NeuralNetwork
 {
     public:
-        NeuralNetwork(vector<uint> topology, float learningRate, vector<string> activationFunctions, string optimizer_);
+        NeuralNetwork(vector<uint> topology, double learningRate, vector<string> activationFunctions, string optimizer_);
 
-        vector<float> forward(vector<float> input);
+        vector<double> forward(vector<double> input);
 
-        void backward(vector<float> expected);
+        void backward(vector<double> expected);
 
         vector<Layer> layers;
 
@@ -128,18 +130,18 @@ class NeuralNetwork
         void uploadWeights(string filepath);
         
     private:
-        void calc_errors(vector<float> expected);
+        void calc_errors(vector<double> expected);
 
         void update_weights();
 
-        float learningRate;
+        double learningRate;
         string optimizer;
         vector<uint> topology;
         vector<string> activationFunctions;
 };
 
-float ReLU(float inp);
+double ReLU(double inp);
 
-float ReLUDerivative(float inp);
+double ReLUDerivative(double inp);
 
-float HeRandom(uint input);
+double HeRandom(uint input);

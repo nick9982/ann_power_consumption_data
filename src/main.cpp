@@ -11,11 +11,8 @@ void learnPowerConsumption();
 
 int main(int argc, char **argv)
 {
-    srand(345);
-    char buffer[100];
-    getcwd(buffer, 100);
-    printf(buffer);
-    cout << "this is rn" << endl;
+    srand(100);
+
     learnPowerConsumption();
 
     return 0;
@@ -24,7 +21,7 @@ int main(int argc, char **argv)
 void learnPowerConsumption()
 {
     dataset processedData(32000, "../../src/data_processing/data/tetuanCityPowerConsumption.csv", "Tetuan City Power Consumption");
-
+    cout << "processing data" << endl;
     processedData.shuffle();
 
     vector<dataset> train_test_data = processedData.split(26000, "train_data", "test_data");
@@ -32,14 +29,15 @@ void learnPowerConsumption()
     dataset test_data = train_test_data[1];
     
     NeuralNetwork nn({6, 10, 5, 3}, 0.01f, {"Linear", "ReLU", "ReLU", "Linear"}, "adam");
-    vector<float> input(6, 0);
-    vector<float> output(3, 0);
+    vector<double> input(6, 0);
+    vector<double> output(3, 0);
 
-    float avg = 0.f;
+    double avg = 0;
     int avg_cnt = 0;
-    float total = 0;
+    double total = 0;
     int view_cnt = 1;
-    for(uint i = 0; i < test_data.data.size(); i++)
+    cout << "testing initial performance..." << endl;
+    for(uint i = 0; i < 200; i++)
     {
         for(uint j = 0; j < test_data.data.size(); j++)
         {
@@ -47,15 +45,15 @@ void learnPowerConsumption()
             else output[j-input.size()] = test_data.data[i][j];
         }
 
-        vector<float> nno = nn.forward(input);
+        vector<double> nno = nn.forward(input);
 
-        float sum = 0.f;
+        double sum = 0;
         for(uint i = 0; i < output.size(); i++)
         {
             sum += abs(test_data.minMaxUnnormalization(nno[i], i+5) - test_data.minMaxUnnormalization(output[i], i+5));
         }
         avg_cnt++;
-        total += sum/3.f;
+        total += sum/3;
         avg = total/avg_cnt;
     }
 
@@ -77,11 +75,12 @@ void learnPowerConsumption()
     auto stop = chrono::_V2::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::microseconds>(stop-start);
 
-    float error_before_training = avg;
-    avg = 0.f;
+    double error_before_training = avg;
+    avg = 0;
     avg_cnt = 0;
     total = 0;
     view_cnt = 1;
+    cout << "\ntesting final performance..." << endl;
     for(uint i = 0; i < test_data.data.size(); i++)
     {
         for(uint j = 0; j < test_data.data.size(); j++)
@@ -90,15 +89,15 @@ void learnPowerConsumption()
             else output[j-input.size()] = test_data.data[i][j];
         }
 
-        vector<float> nno = nn.forward(input);
+        vector<double> nno = nn.forward(input);
 
-        float sum = 0.f;
+        double sum = 0.f;
         for(uint i = 0; i < output.size(); i++)
         {
             sum += abs(test_data.minMaxUnnormalization(nno[i], i+5) - test_data.minMaxUnnormalization(output[i], i+5));
         }
         avg_cnt++;
-        total += sum/3.f;
+        total += sum/3;
         avg = total/avg_cnt;
     }
     cout << "\nAverage error before training: " << error_before_training << endl;
@@ -108,6 +107,7 @@ void learnPowerConsumption()
     if(duration.count() * 0.000001 > 60) cout << "\nTraining time: " << (duration.count() * 0.000001)/60 << " minutes" << endl;
     else cout << "\nTraining time: " << duration.count() * 0.000001 << " seconds" << endl;
 
+    cout << "downloading the statistics of this network." << endl;
     nn.downloadWeights();
     nn.uploadWeights("../../src/neural_network/weights/weights.json");
     avg = 0.f;
@@ -121,9 +121,9 @@ void learnPowerConsumption()
             else output[j-input.size()] = test_data.data[i][j];
         }
 
-        vector<float> nno = nn.forward(input);
+        vector<double> nno = nn.forward(input);
 
-        float sum = 0.f;
+        double sum = 0.f;
         for(uint i = 0; i < output.size(); i++)
         {
             sum += abs(test_data.minMaxUnnormalization(nno[i], i+5) - test_data.minMaxUnnormalization(output[i], i+5));

@@ -45,7 +45,7 @@ void dataset::readFile()
 
 void dataset::normalize()
 {
-    this->data = vector<vector<float>>(this->unnormalized_data.size(), vector<float>(this->unnormalized_data[0].size()));
+    this->data = vector<vector<double>>(this->unnormalized_data.size(), vector<double>(this->unnormalized_data[0].size()));
     unnorminfo = vector<minMaxFinder>(this->unnormalized_data[0].size()-1);
 
     for(uint i = 0; i < this->unnormalized_data.size(); i++)
@@ -68,7 +68,7 @@ void dataset::normalize()
     }
 }
 
-float dataset::normalizeTime(string time)
+double dataset::normalizeTime(string time)
 {
     string pt1;
     string pt2;
@@ -84,28 +84,28 @@ float dataset::normalizeTime(string time)
     pt1 = time.substr(idx_space+1, idx_colon-idx_space-1);
     pt2 = time.substr(idx_colon+1);
 
-    float mins = (stof(pt1) * 60.f) + stof(pt2);
+    double mins = (stof(pt1) * 60.f) + stof(pt2);
     //cout << mins/1440 << endl;
     return mins/1440;
 }
 
-float dataset::minMaxNormalization(float x, minMaxFinder mmf)
+double dataset::minMaxNormalization(double x, minMaxFinder mmf)
 {
     return (x - mmf.min) / (mmf.max - mmf.min);
 }
 
-float dataset::minMaxUnnormalization(float x, uint column)
+double dataset::minMaxUnnormalization(double x, uint column)
 {
     return (x * (this->unnorminfo[column].max - this->unnorminfo[column].min) + this->unnorminfo[column].min);
 }
 
 minMaxFinder::minMaxFinder()
 {
-    this->min = numeric_limits<float>::max();
-    this->max = numeric_limits<float>::min();
+    this->min = numeric_limits<double>::max();
+    this->max = numeric_limits<double>::min();
 }
 
-void minMaxFinder::isMinOrMax(float x)
+void minMaxFinder::isMinOrMax(double x)
 {
     if(x < this->min) this->min = x;
     if(x > this->max) this->max = x;
@@ -133,8 +133,8 @@ vector<dataset> dataset::split(uint splitAt, string name1, string name2)
     vector<dataset> datasets;
     dataset one(this->size, this->filepath, name1);
     dataset two(this->size, this->filepath, name2);
-    one.data = vector<vector<float>>(splitAt, vector<float>(this->data[0].size()));
-    two.data = vector<vector<float>>(this->data.size()-splitAt, vector<float>(this->data[0].size()));
+    one.data = vector<vector<double>>(splitAt, vector<double>(this->data[0].size()));
+    two.data = vector<vector<double>>(this->data.size()-splitAt, vector<double>(this->data[0].size()));
     one.column_labels = this->column_labels;
     two.column_labels = this->column_labels;
     one.unnorminfo = this->unnorminfo;
@@ -154,7 +154,7 @@ vector<dataset> dataset::split(uint splitAt, string name1, string name2)
     return datasets;
 }
 
-void dataset::setData(uint i, uint j, float val)
+void dataset::setData(uint i, uint j, double val)
 {
     this->data[i][j] = val;
 }

@@ -15,17 +15,17 @@ class minMaxFinder
     public:
         minMaxFinder();
 
-        void isMinOrMax(float x);
+        void isMinOrMax(double x);
 
-        float min;
-        float max;
+        double min;
+        double max;
 };
 
 class dataset
 {
     public:
         vector<vector<string>> unnormalized_data;
-        vector<vector<float>> data;
+        vector<vector<double>> data;
         vector<minMaxFinder> unnorminfo;
         uint size;
         string filepath;
@@ -38,15 +38,15 @@ class dataset
 
         void normalize();
 
-        float normalizeTime(string time);
+        double normalizeTime(string time);
 
-        float minMaxNormalization(float x, minMaxFinder mmf);
+        double minMaxNormalization(double x, minMaxFinder mmf);
 
-        float minMaxUnnormalization(float x, uint column);
+        double minMaxUnnormalization(double x, uint column);
 
         vector<dataset> split(uint splitAt, string name1, string name2);
 
-        void setData(uint i, uint j, float val);
+        void setData(uint i, uint j, double val);
 
         void peak(uint limit);
 
