@@ -56,7 +56,7 @@ void learnPowerConsumption()
         total += sum/3;
         avg = total/avg_cnt;
     }
-
+    cout << "training..." << endl;
     auto start = chrono::_V2::high_resolution_clock::now();
     for(uint i = 0; i < train_data.data.size(); i++)
     {
